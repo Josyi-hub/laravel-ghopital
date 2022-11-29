@@ -15,15 +15,6 @@
  @endif
  <form method="post" action="{{ route('patients.store') }}">
  @csrf
- <div class="form-group">
- <label for="nomPatient">Nom:</label>
- <input type="text" class="form-control" name="nomPatient"/>
- </div>
- <div class="form-group">
- <label for="prenomPatient">Prénom:</label>
- <input type="text" class="form-control" name="prenomPatient"/>
- </div>
-
  <button type="submit" class="btn btn-primary-outline">Ajouter Patient</button>
 </form>
 </div>

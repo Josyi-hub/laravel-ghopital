@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PatientController extends Controller
 {
@@ -36,14 +37,11 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nomPatient'=>'required',
-            'prenomPatient'=>'required',
-            ]);
 
+
+        $id = Str::random(4);
         $patient = new Patient([
-            'nomPatient' => $request->get('nomPatient'),
-            'prenomPatient' => $request->get('prenomPatient')
+            'id' => $id,
             ]);
         $patient->save();
         return redirect('/patients')->with('success', 'patient créé!');
@@ -86,7 +84,7 @@ class PatientController extends Controller
             'nomPatient'=>'required',
             'prenomPatient'=>'required',
             ]);
-            
+
         $patient = Patient::find($id);
         $patient->nomPatient = $request->get('nomPatient');
         $patient->prenomPatient = $request->get('prenomPatient');
@@ -98,7 +96,7 @@ class PatientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

@@ -14,13 +14,13 @@ class Medecin extends Model
         'nomMedecin'
     ];
 
-    public function rdv()
+    public function type_medecin()
     {
-        return $this->hasMany('App\Models\RDV');
+        return $this->belongsTo('App\Models\TypeMedecin', 'typeMedecin_id');
     }
 
-    public function specialite()
+    public function rdv()
     {
-        return $this->hasMany('App\Models\TypeMedecin');
+        return $this->hasMany('App\Models\RDV', 'medecin_id');
     }
 }

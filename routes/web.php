@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ConnexionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +20,18 @@ Route::get('/', function () {
 Route::resource('patients','App\Http\Controllers\PatientController');
 Route::resource('type_medecin','App\Http\Controllers\TypeMedecinController');
 Route::resource('medecin','App\Http\Controllers\MedecinController');
+Route::resource('rdv','App\Http\Controllers\RdvController');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/connexion', 'App\Http\Controllers\ConnexionController@formulaire');
+Route::post('/connexion', 'App\Http\Controllers\ConnexionController@traitement');
+Route::get('/inscription', function () {
+    return view('inscription');
+});
+Route::post('/inscription', function () {
+    return 'Votre num est ' . request('numPatient');
+});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 
 

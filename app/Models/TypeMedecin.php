@@ -13,8 +13,8 @@ class TypeMedecin extends Model
         'nomType'
     ];
 
-    public function user()
+    public function medecin()
     {
-        return $this->belongsTo('App\Models\Medecin');
+        return $this->hasMany(Medecin::class, 'typeMedecin_id');
     }
 }

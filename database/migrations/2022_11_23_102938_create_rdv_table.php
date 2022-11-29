@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rdvs', function (Blueprint $table) {
+        Schema::create('r_d_v_s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedbigInteger('patient_id');
+            $table->string('patient_id');
             $table->unsignedbigInteger('medecin_id');
             $table->date('dateRDV');
-            $table->time('heureRDV');
             $table->timestamps();
-            $table->foreign('patient_id')->references('id')->on('users');
+            $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('medecin_id')->references('id')->on('medecins');
         });
     }

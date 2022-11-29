@@ -18,12 +18,23 @@ class Patient extends Model implements Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'nomPatient',
-        'prenomPatient'
+        'id',
     ];
+
+    public $incrementing = false;
+
+    /**
+     * Get the password for the user.
+     *
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->numPatient;
+    }
 
     public function rdv()
     {
-        return $this->hasMany('App\Models\RDV');
+        return $this->hasMany('App\Models\RDV', 'patient_id');
     }
 }

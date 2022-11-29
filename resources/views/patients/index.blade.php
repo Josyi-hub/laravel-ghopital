@@ -16,8 +16,6 @@
             <thead>
                 <tr>
                     <td>ID</td>
-                    <td>Nom</td>
-                    <td>Prénom(s)</td>
                     <td>Actions</td>
                 </tr>
             </thead>
@@ -25,8 +23,6 @@
                 @foreach($patients as $patient)
                 <tr>
                     <td>{{$patient->id}}</td>
-                    <td>{{$patient->nomPatient}}</td>
-                    <td>{{$patient->prenomPatient}}</td>
                     <td>
                         <a href="{{ route('patients.edit',$patient->id)}}" class="btn btn-primary">Editer</a>
                     </td>

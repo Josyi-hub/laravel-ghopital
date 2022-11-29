@@ -17,12 +17,11 @@ class RDV extends Model
         'patient_id',
         'medecin_id',
         'dateRDV',
-        'heureRDV'
     ];
 
     public function patient()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\Patient');
     }
 
     public function medecin()
