@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('patient_id');
             $table->unsignedbigInteger('medecin_id');
             $table->date('dateRDV');
+            $table->string('etat')->default('En attente');
             $table->timestamps();
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('medecin_id')->references('id')->on('medecins');

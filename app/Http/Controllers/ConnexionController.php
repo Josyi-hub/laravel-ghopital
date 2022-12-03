@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\TypeMedecin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,15 +18,19 @@ class ConnexionController extends Controller
     public function traitement()
     {
         request()->validate([
-            'numPatient' => ['required'],
+            'patient_id' => ['required'],
         ]);
 
 
-        $numPatient = request('numPatient');
+        $numPatient = request('patient_id');
 
         $resultat = Auth::loginUsingId($numPatient);
 
-        return Auth::id();
+        if ($resultat){
+            return redirect('/')->with('success', 'Authentification réussie');
+        }
+
+        return redirect('/')->withErrors('Operation échouez, reessayez');
 
     }
 }

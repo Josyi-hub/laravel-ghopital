@@ -23,18 +23,8 @@ class Patient extends Model implements Authenticatable
 
     public $incrementing = false;
 
-    /**
-     * Get the password for the user.
-     *
-     * @return string
-     */
-    public function getAuthPassword()
-    {
-        return $this->numPatient;
-    }
-
     public function rdv()
     {
-        return $this->hasMany('App\Models\RDV', 'patient_id');
+        return $this->hasMany(RDV::class, 'patient_id');
     }
 }

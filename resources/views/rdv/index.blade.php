@@ -27,7 +27,7 @@
                 @foreach($patients as $patient)
                 <tr>
                     <td>{{$patient->patient_id}}</td>
-                    <td>{{$patient->patient->nomPatient}} {{$patient->patient->prenomPatient}}</td>
+                    <td>{{$patient->patient->id}} {{$patient->patient->prenomPatient}}</td>
                     <td>{{$patient->medecin->nomMedecin}}</td>
                     <td>{{$patient->medecin->type_medecin->nomType}}</td>
                     <td>{{$patient->dateRDV}}</td>

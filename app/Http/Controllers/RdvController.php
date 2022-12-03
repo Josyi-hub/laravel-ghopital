@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Medecin;
+use App\Models\Patient;
 use App\Models\RDV;
 use App\Models\TypeMedecin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class RdvController extends Controller
 {
@@ -40,26 +44,67 @@ class RdvController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'patient_id'=>'required',
-            'medecin_id'=>'required',
-            'dateRDV'=>'required',
-            ]);
 
-        $numPatient = request('numPatient');
-        $resultat = Auth::loginUsingId($numPatient);
-        if ($resultat)
+        $numPatient = request('patient_id');
+        $etat_patient = request('etat_patient');
+        $daterdv = request('dateRDV');
+        $medecin_id = request('medecin_id');
+
+        if (RDV::where('dateRDV', $daterdv)->exists())
         {
-            $patient = new RDV([
-                'patient_id' => $request->get('patient_id'),
-                'medecin_id' => $request->get('medecin_id'),
-                'dateRDV' => $request->get('dateRDV')
-                ]);
-            $patient->save();
-            return redirect('/')->with('success', 'Rendez-vous créé!', compact('resultat'));
+            return redirect('/')->withErrors('La date choisie est déjà occupé. Choisissez une autre date.');
         }
 
-        return redirect('/')->withErrors('verifiez votre numero patient');
+        if ($etat_patient == '1')
+        {
+            $request->validate([
+                'patient_id'=>'required',
+                'medecin_id'=>'required',
+                'dateRDV'=>'required',
+                ]);
+
+            $resultat = Auth::loginUsingId($numPatient);
+            if ($resultat)
+            {
+
+                $patient = new RDV([
+                    'patient_id' => $request->get('patient_id'),
+                    'medecin_id' => $request->get('medecin_id'),
+                    'dateRDV' => $request->get('dateRDV')
+                    ]);
+                $patient->save();
+                return redirect('/')->with('success', 'Rendez-vous créé!', compact('resultat'));
+            }
+
+            return redirect('/')->withErrors('verifiez votre numero patient');
+        }
+        else
+        {
+            $request->validate([
+                'medecin_id'=>'required',
+                'dateRDV'=>'required',
+                ]);
+
+            $id = Str::random(4);
+            $patient = new Patient([
+                'id' => $id,
+                ]);
+            $patient->save();
+            $resulta = Auth::loginUsingId($id);
+            if ($resulta)
+            {
+                $patient = new RDV([
+                    'patient_id' => $id,
+                    'medecin_id' => $request->get('medecin_id'),
+                    'dateRDV' => $request->get('dateRDV')
+                    ]);
+                $patient->save();
+                return redirect('/')->with('success', 'Vous avez été enregistré. Votre numero patient est '.$id.' Veuillez le noter s\'il vous plait. Rendez-vous créé!', compact('resulta'));
+            }
+
+            return redirect('/')->withErrors('Operation échouez, reessayez');
+
+        }
     }
 
     /**
@@ -104,7 +149,7 @@ class RdvController extends Controller
         $patient->medecin_id = $request->get('medecin_id');
         $patient->dateRDV = $request->get('dateRDV');
         $patient->save();
-        return redirect('/rdv')->with('success', 'Rendez-vous mis à jour!');
+        return redirect('/')->with('success', 'Rendez-vous mis à jour!');
     }
 
     /**
@@ -117,6 +162,6 @@ class RdvController extends Controller
     {
         $patient = RDV::find($id);
         $patient->delete();
-        return redirect('/rdv')->with('success', 'Rendez-vous supprimé!');
+        return redirect('/')->with('success', 'Rendez-vous supprimé!');
     }
 }
